@@ -74,6 +74,34 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!Number(id)) {
+      res.status(400).send({
+        message: "Invalid ID",
+      });
+      return;
+    }
+    const found = note.find(Number(id));
+    if (!found) {
+      res.status(404).send({
+        message: "Note not found",
+      });
+      return;
+    }
+    res.send({
+      message: "Note fetched successfully",
+      data: found,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+});
+
 router.patch("/:id", (req, res) => {
   try {
     const { id } = req.params;

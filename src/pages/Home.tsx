@@ -26,9 +26,10 @@ export default function Home() {
     onSuccess: (data) => {
       notifications.show({
         title: "Note Created",
-        message: data.body,
+        message: "Note created successfully",
         color: "blue",
       });
+      console.log("New note: ", data);
       navigate(`/notes/${data.id}`);
     },
     onError: (error) => {

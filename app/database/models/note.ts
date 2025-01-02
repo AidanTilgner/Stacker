@@ -47,10 +47,13 @@ export default class NoteModel extends Model {
       }
 
       const insertNote = this.database.prepare(`
-        INSERT INTO notes (body, createdAt, updatedAt) VALUES (?, ?, ?, ?)
+        INSERT INTO notes (body, createdAt, updatedAt) VALUES (?, ?, ?)
       `);
       insertNote.run(body, new Date().toISOString(), new Date().toISOString());
-      return true;
+      const note = this.database.prepare(`
+        SELECT * FROM notes WHERE id = last_insert_rowid()
+      `);
+      return note.get() as Note;
     } catch (err) {
       console.error(err);
       return err;
@@ -58,10 +61,16 @@ export default class NoteModel extends Model {
   }
 
   public delete(id: number) {
-    const deleteNote = this.database.prepare(`
-      DELETE FROM notes WHERE id = ?
-    `);
-    deleteNote.run(id);
+    try {
+      const deleteNote = this.database.prepare(`
+        DELETE FROM notes WHERE id = ?
+      `);
+      deleteNote.run(id);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return err;
+    }
   }
 
   public find(id: number): Note {
@@ -92,6 +101,8 @@ export default class NoteModel extends Model {
       const updateNote = this.database.prepare(`
         UPDATE notes SET ${updaters.map((u) => `${u.key} = ?`).join(", ")} WHERE id = ?
       `);
+
+      console.log("Prepared statement: ", updateNote.toString());
 
       const values = updaters.map((u) => u.value);
       updateNote.run(...values, id);
