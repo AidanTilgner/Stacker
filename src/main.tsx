@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 import { theme } from "./theme.ts";
 
 import "@mantine/core/styles.css";
@@ -16,7 +17,9 @@ const Client = () => {
     <BrowserRouter>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         <Notifications position="top-right" />
-        <App />
+        <ModalsProvider>
+          <App />
+        </ModalsProvider>
       </MantineProvider>
     </BrowserRouter>
   );

@@ -151,4 +151,25 @@ router.patch("/post/:id", (req, res) => {
   }
 });
 
+router.delete("/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!Number(id)) {
+      res.status(400).send({
+        message: "Invalid ID",
+      });
+      return;
+    }
+    note.delete(Number(id));
+    res.send({
+      message: "Note deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: "Internal Server Error",
+    });
+  }
+});
+
 export default router;

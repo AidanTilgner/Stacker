@@ -10,11 +10,7 @@ export default function Layout() {
   const [opened, { toggle }] = useDisclosure();
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-    >
+    <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
@@ -27,7 +23,7 @@ export default function Layout() {
           </Group>
         </Group>
       </AppShell.Header>
-      <Navbar />
+      {/* <Navbar /> */}
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
